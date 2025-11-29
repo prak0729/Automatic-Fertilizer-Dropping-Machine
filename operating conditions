@@ -1,0 +1,35 @@
+The project operates primarily in an AUTONOMOUS MODE;
+Following a loop of detection, movement, and application. 
+The flow chart for the machine is detailed below:
+
+1. Initialization and Setup (ON State)
+The system, powered by the Li-ion battery, is switched ON.
+The Bluetooth module (HC-05) is connected to the control mobile app (e.g., 'Series Bluetooth Terminal'), giving the operator manual control authority.
+The Arduino UNO initializes the BO Motors, Servo Motor, and sensors.
+
+2. Plant Detection (Sensing Phase)
+The robot starts moving forward, searching for plants.
+The ESP32-CAM continuously captures images of the environment.
+The on-board Edge Impulse ML model processes the captured image data to confirm the presence of a target plant.
+
+Result: If a plant is detected, a signal is sent to the Arduino.
+
+3. Movement and Proximity Check (Navigation Phase)
+Upon receiving the plant detection signal, the Arduino commands the DC Motors (via the motor driver) to move the robot forward.
+The Ultrasonic Sensor (HC-SR04) continuously measures the distance between the robot and the detected object (the plant).
+
+Result: The Arduino monitors the distance. 
+        When the robot reaches a predefined distance (proximity threshold) from the plant, the system moves to the next stage.
+
+4. Targeted Fertilizer Dropping (Application Phase)
+The Arduino commands the robot to stop the DC motors.
+The Servo Motor is activated, which opens the dispenser channel.
+A pre-measured amount of fertilizer is dropped onto the targeted plant.
+The Servo Motor then closes the dispenser channel.
+
+5. Cycle Restart
+The robot begins moving forward again, returning to the Plant Detection phase to search for the next target plant.
+
+MANUAL CONTROL (Override Mode);
+In addition to the autonomous mode, the operator can use the Bluetooth module (HC-05) and a mobile app to send commands to the Arduino to manually control the robot's direction.
+This provides flexibility for navigation in situations where the autonomous system might not perform optimally.
